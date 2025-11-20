@@ -1,0 +1,189 @@
+<?php
+require_once '../Controller/StreamController.php';
+require_once '../Model/Stream.php';
+
+if (!isset($_GET['id'])) {
+    die("ID manquant !");
+}
+
+$ctrl = new StreamController();
+$streamData = $ctrl->getStreamById($_GET['id']);
+
+if (!$streamData) {
+    die("Stream introuvable !");
+}
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $stream = new Stream(
+        $_POST['titre'],
+        $streamData['nb_viewers'],
+        $streamData['total_dons'],
+        $streamData['id_user'],
+        $_POST['statut'],
+        $_POST['start_time'],
+        $_POST['end_time']
+    );
+
+    $ctrl->updateStream($_POST['id_stream'], $stream);
+
+    header("Location: index.php");
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>🎮 Modifier un Stream</title>
+
+<!-- Police gaming -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        background: radial-gradient(circle at top, #0a0f24, #000000);
+        font-family: 'Orbitron', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #e0e0e0;
+    }
+
+    .card {
+        background: rgba(15, 20, 40, 0.85);
+        border: 2px solid #0ff;
+        border-radius: 12px;
+        padding: 35px 40px;
+        width: 500px;
+        box-shadow:
+            0 0 20px rgba(0, 255, 255, 0.4),
+            0 0 40px rgba(138, 43, 226, 0.3);
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.98); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #00ffff;
+        text-shadow: 0 0 10px #00ffff;
+        letter-spacing: 2px;
+    }
+
+    label {
+        margin-top: 12px;
+        display: block;
+        color: #9ad7ff;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 13px;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 12px;
+        border-radius: 6px;
+        border: 2px solid #00bcd4;
+        margin-top: 8px;
+        background: rgba(5, 10, 20, 0.7);
+        color: #e0e0e0;
+        font-size: 15px;
+        outline: none;
+        box-shadow: 0 0 10px rgba(0,255,255,0.2);
+        transition: 0.2s;
+    }
+
+    input:focus, select:focus {
+        border-color: #00ffff;
+        box-shadow: 0 0 15px #00ffff;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 25px;
+        padding: 14px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(90deg, #00eaff, #7a00ff);
+        color: white;
+        font-size: 18px;
+        text-transform: uppercase;
+        font-weight: bold;
+        letter-spacing: 2px;
+        cursor: pointer;
+        box-shadow:
+            0 0 10px #00eaff,
+            0 0 20px #7a00ff;
+        transition: 0.2s ease-in-out;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+        box-shadow:
+            0 0 15px #00eaff,
+            0 0 30px #7a00ff;
+    }
+
+    .back {
+        margin-top: 18px;
+        display: block;
+        text-align: center;
+        color: #9ad7ff;
+        font-size: 14px;
+        text-decoration: none;
+    }
+
+    .back:hover {
+        color: #00ffff;
+        text-shadow: 0 0 8px #00ffff;
+    }
+</style>
+
+</head>
+<body>
+
+<div class="card">
+
+<h2>🎮 Modifier Stream</h2>
+
+<form method="POST">
+
+    <input type="hidden" name="id_stream" value="<?= $streamData['id_stream'] ?>">
+
+    <label>Titre</label>
+    <input type="text" name="titre" value="<?= htmlspecialchars($streamData['titre']) ?>" required>
+
+    <label>Statut</label>
+    <select name="statut" required>
+        <option value="scheduled" <?= $streamData['statut']=="scheduled"?"selected":"" ?>>Scheduled</option>
+        <option value="live" <?= $streamData['statut']=="live"?"selected":"" ?>>Live</option>
+        <option value="ended" <?= $streamData['statut']=="ended"?"selected":"" ?>>Ended</option>
+    </select>
+
+    <label>Heure de début</label>
+    <input type="datetime-local" name="start_time"
+           value="<?= $streamData['Start'] ? date('Y-m-d\TH:i', strtotime($streamData['Start'])) : '' ?>">
+
+    <label>Heure de fin</label>
+    <input type="datetime-local" name="end_time"
+           value="<?= $streamData['End'] ? date('Y-m-d\TH:i', strtotime($streamData['End'])) : '' ?>">
+
+    <button type="submit">Mettre à jour</button>
+
+</form>
+
+<a href="index.php" class="back">← Retour</a>
+
+</div>
+
+ <script src="assets/js/updatestream.js"></script>
+</body>
+</html>

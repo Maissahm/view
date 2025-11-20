@@ -1,0 +1,162 @@
+  /* 🎮 Fond gamer RGB animé */
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0a0f1f, #111931, #060b15);
+      background-size: 400% 400%;
+      animation: bgMove 12s infinite;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      padding-bottom: 40px;
+    }
+
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* 🎮 Bouton Retour RGB */
+    #backBtn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 999999;
+      padding: 12px 22px;
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none;
+      color: white;
+      background: linear-gradient(135deg, #1b2037, #2e365a);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: 0.25s;
+    }
+
+    #backBtn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      padding: 2px;
+      background: linear-gradient(135deg, #ff004d, #00d1ff, #6a5df9, #ff5e7e);
+      background-size: 300% 300%;
+      animation: rgbMove 4s linear infinite;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box,
+                    linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+    }
+
+    #backBtn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #00d1ff88;
+    }
+
+    @keyframes rgbMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* 🎮 Titre neon */
+    h1 {
+      margin-top: 40px;
+      font-size: 32px;
+      font-weight: 700;
+      text-shadow: 0 0 12px #00d1ff, 0 0 24px #6a5df9;
+    }
+
+    /* 🎥 Cadre vidéo RGB */
+    #remoteVideo {
+      width: 92%;
+      max-width: 1200px;
+      height: 550px;
+      margin-top: 25px;
+      border-radius: 16px;
+      border: 4px solid transparent;
+      animation: rgbBorder 4s linear infinite;
+      box-shadow: 0 0 25px #0009;
+      background: black;
+      object-fit: cover;
+    }
+
+    @keyframes rgbBorder {
+      0% { border-color: #ff004d; }
+      25% { border-color: #00d1ff; }
+      50% { border-color: #6a5df9; }
+      75% { border-color: #ff5e7e; }
+      100% { border-color: #ff004d; }
+    }
+
+    #status {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      opacity: 0.9;
+      text-shadow: 0 0 8px #00d1ff88;
+    }
+
+    /* 🎮 Chat RGB */
+    #chat {
+      width: 75%;
+      margin: 35px auto;
+      height: 260px;
+      background: rgba(20, 25, 45, 0.75);
+      backdrop-filter: blur(8px);
+      overflow-y: auto;
+      padding: 15px;
+      border-radius: 14px;
+      border: 2px solid #6a5df966;
+      box-shadow: 0 0 20px #000a;
+      text-align: left;
+    }
+
+    /* 🎮 Champ texte */
+    input {
+      width: 70%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 2px solid #1f2a40;
+      background: #131a2e;
+      color: #fff;
+      margin-top: 10px;
+      outline: none;
+      box-shadow: inset 0 0 10px #0008;
+    }
+
+    /* 🎮 Boutons RGB */
+    button, .rgb-btn {
+      margin: 15px;
+      padding: 12px 26px;
+      border-radius: 12px;
+      border: none;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      color: white;
+      background: linear-gradient(135deg, #1b2037, #2e365a);
+      position: relative;
+      overflow: hidden;
+      transition: 0.25s;
+    }
+
+    button::before, .rgb-btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      padding: 2px;
+      background: linear-gradient(135deg, #ff004d, #00d1ff, #6a5df9, #ff5e7e);
+      background-size: 300% 300%;
+      animation: rgbMove 4s linear infinite;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box,
+                    linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+    }
+
+    button:hover, .rgb-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 15px #00d1ff88;
+    }

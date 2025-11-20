@@ -1,0 +1,66 @@
+body {
+    background: #1A1F35;
+    color: rgb(250, 247, 247);
+    font-family: Arial;
+}
+
+.payment-container {
+    width: 400px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.card-box {
+    width: 400px;
+    height: 230px;
+    border-radius: 60px;
+    padding: 40px;
+    color: rgb(9, 9, 9);
+    font-size: 60px;
+    letter-spacing: 3px;
+
+    /* 🌟 UTILISATION DE TON IMAGE COMME BACKGROUND */
+    background-image: url("./card.jpeg");
+
+
+    background-size: cover;     /* Remplit toute la carte */
+    background-position: center; /* Centre l'image */
+    background-repeat: no-repeat; /* Pas de répétition */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(103, 14, 14, 0.4);
+}
+
+.card-number {
+    font-size: 25px;
+    letter-spacing: 3px;
+    margin-top: 90px;
+}
+
+.card-holder {
+    margin-top: 20px;
+    font-size: 25px;
+}
+
+.card-expiry {
+    margin-top: 30px;
+    font-size: 14px;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: none;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
