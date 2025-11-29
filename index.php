@@ -12,8 +12,9 @@ session_start();
 //$_SESSION['role'] = 'streamer';
 
 // VIEWER
-//$_SESSION['id_user'] = 50;
-//$_SESSION['role'] = 'viewer';
+ $_SESSION['user_name'] = "amal";
+$_SESSION['id_user'] = 6;
+$_SESSION['role'] = 'viewer';
 
 // ASSOCIATION
 //$_SESSION['id_user'] = 60;

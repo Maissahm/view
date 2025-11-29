@@ -1,4 +1,12 @@
 <?php
+session_start();
+require_once '../Controller/DonController.php';
+$donCtrl = new DonController();
+$projetsInfos = $donCtrl->getAllProjetsInfos();
+
+
+
+
 require_once "../Controller/StreamController.php";
 
 if (!isset($_GET['id'])) {
@@ -25,9 +33,23 @@ $titre = htmlspecialchars($stream['titre']);
 
   <script src="http://localhost:3000/socket.io/socket.io.js"></script>
 
-  
   <link rel="stylesheet" href="assets/css/viewer.css">
 </head>
+<style>
+  body {
+  
+  width: 95%;
+    transform: scale(0.85);
+    transform-origin: top center;
+
+}
+.popup-content {
+    transform: scale(0.85);
+    transform-origin: top center;
+}
+
+
+</style>
 
 <body>
 
@@ -49,10 +71,34 @@ $titre = htmlspecialchars($stream['titre']);
 <br>
 <button id="sendBtn">Envoyer</button>
 
+<!-- 🎁 AJOUT : Bouton Gift -->
+<button id="giftBtn" style="font-size:15px; margin-top:10px;">🎁 Cadeaux</button>
+
 <!-- 💳 Faire un don RGB -->
 <div>
-  <a class="rgb-btn" href="dons.php>" target="_blank">💳 Faire un don</a>
+ <div>
+  <input type="number" id="donMontant" placeholder="Montant (€)" style="padding:6px; width:200px;">
+  
+ <select id="donProjet" style="padding:6px; width:220px;">
+    <option disabled selected>-- Choisir un projet --</option>
+
+    <?php foreach ($projetsInfos as $p): ?>
+        <?php if ($p['montant_collecte'] < $p['montant_estimé']): ?>
+            <option value="<?= $p['id_projet'] ?>">
+                <?= htmlspecialchars($p['titre_projet']) ?>
+            </option>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</select>
+
+  <input type="hidden" id="donStream" value="<?= $id_stream ?>">
+  <input type="hidden" id="donUser" value="<?= $_SESSION['id_user'] ?? 0 ?>">
+
+  <button id="btnPay" class="rgb-btn">💳 Faire un don</button>
 </div>
+
+</div>
+
 <!-- Overlay publicité -->
 <div id="adContainer" style="
     position: fixed;
@@ -83,7 +129,6 @@ $titre = htmlspecialchars($stream['titre']);
         Passer la publicité »
     </p>
 </div>
-
 
 
 <script>
@@ -183,6 +228,7 @@ $titre = htmlspecialchars($stream['titre']);
     chat.scrollTop = chat.scrollHeight;
   });
 </script>
+
 <script>
 const adContainer = document.getElementById("adContainer");
 const adVideo = document.getElementById("adVideo");
@@ -205,10 +251,10 @@ soundBtn.addEventListener("click", () => {
     soundBtn.style.display = "none";
 });
 
-// Afficher "Passer" après 5s
+// Afficher "Passer" après 10s
 setTimeout(() => {
     skipText.style.display = "block";
-}, 10000);
+}, 10);
 
 // Fin automatique
 adVideo.onended = () => {
@@ -220,10 +266,143 @@ skipText.addEventListener("click", () => {
     adContainer.style.display = "none";
     adVideo.pause();
 });
-
-
-
 </script>
+
+<!-- 🎁 AJOUT : POPUP GIFT SHOP -->
+<div id="giftShop" style="
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.7);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:99999;
+">
+  <div style="background:black; padding:20px; border-radius:10px; width:320px;">
+    <h3>Cadeaux Tunisiens 🎁</h3>
+
+    <div id="giftList" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:40px;"></div>
+
+    <button id="closeGiftShop" style="margin-top:20px; width:100%;">Fermer</button>
+  </div>
+</div>
+
+
+<script>
+const giftBtn = document.getElementById("giftBtn");
+const giftShop = document.getElementById("giftShop");
+const giftList = document.getElementById("giftList");
+const closeGiftShop = document.getElementById("closeGiftShop");
+
+// Charger les cadeaux
+let gifts = [];
+fetch("api/get_gifts.php")
+    .then(res => res.json())
+    .then(data => {
+        gifts = data;
+        console.log("Gifts chargés :", gifts);
+    });
+
+// Ouvrir la boutique
+giftBtn.onclick = () => {
+    giftList.innerHTML = "";
+    gifts.forEach(g => {
+        giftList.innerHTML += `
+            <div onclick="sendGift(${g.id})"
+                style="border:1px solid #ddd; padding:8px; border-radius:8px; cursor:pointer; text-align:center; background:white;">
+                <img src="${g.photog}" style="width:120px; height:120px; object-fit:contain;"><br>
+                <p style="color:black; font-weight:bold;">🎁 ${g.nameg}</p>
+                <p style="color:black;"><strong>${g.priceg} DT</strong></p>
+            </div>
+        `;
+    });
+    giftShop.style.display = "flex";
+};
+
+// Fermer popup
+closeGiftShop.onclick = () => {
+    giftShop.style.display = "none";
+};
+
+// ENVOYER GIFT
+function sendGift(id) {
+    const gift = gifts.find(g => g.id == id);
+    if (!gift) return;
+
+    // 1) Envoyer via WebSocket
+    socket.emit("send-gift", {
+        streamId,
+        giftId: gift.id,
+        giftName: gift.nameg,
+        amount: parseFloat(gift.priceg),
+        logo: gift.photog,
+        senderId: <?= json_encode($_SESSION['id_user']) ?>,
+        senderName: <?= json_encode($_SESSION['user_name'] ?? "Inconnu") ?>,
+        receiverId: <?= json_encode($stream['id_user']) ?>
+    });
+
+    // 2) Mettre à jour le portefeuille côté serveur
+    fetch("api/add_revenue.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            receiverId: <?= json_encode($stream['id_user']) ?>,
+            amount: parseFloat(gift.priceg)
+        })
+    });
+
+    giftShop.style.display = "none";
+}
+
+// RECEVOIR GIFT
+socket.on("receive-gift", (data) => {
+    const div = document.createElement("div");
+    div.innerHTML = `
+        <strong>${data.senderName}</strong> a envoyé 🎁 
+        <strong>${data.giftName}</strong>
+        <span style="color:green;">(${data.amount.toFixed(2)} DT)</span>
+    `;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+});
+</script>
+<script>
+document.getElementById("btnPay").addEventListener("click", async () => {
+
+    const montant = document.getElementById("donMontant").value;
+    const projet  = document.getElementById("donProjet").value;
+    const stream  = document.getElementById("donStream").value;
+    const user    = document.getElementById("donUser").value;
+
+    if (montant <= 0) {
+        alert("Veuillez entrer un montant valide.");
+        return;
+    }
+
+    const res = await fetch("api/create_checkout_session.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            montant: montant,
+            id_projet: projet,
+            id_stream: stream,
+            id_user: user
+        })
+    });
+
+    const data = await res.json();
+
+    if (data.error) {
+        alert("Erreur Stripe : " + data.error);
+    }
+    else if (data.url) {
+       window.open(data.url, "_blank"); // 🌟 OUVERTURE NOUVEL ONGLET
+
+    }
+});
+</script>
+
 
 
 </body>

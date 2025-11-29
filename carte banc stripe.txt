@@ -1,0 +1,6 @@
+carte banc
+Numéro : 4242 4242 4242 4242
+Date d’expiration : n’importe (ex : 12/29)
+CVC : n’importe (ex : 123)
+Pays : n’importe
+Code postal : n’importe

@@ -1,0 +1,114 @@
+/* ======== GLOBAL ======== */
+body {
+    background: #1A1F35;  
+    color: #fffcfc;
+    font-family: "Orbitron", sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+/* ======== CONTENEUR ======== */
+.payment-container {
+    width: 320px;
+    margin: 40px auto;
+    text-align: center;
+    padding: 10px;
+}
+
+/* ======== CARTE BANCAIRE ======== */
+.card-box {
+    width: 320px;
+    height: 200px;
+    border-radius: 25px;
+    padding: 15px;
+
+    background-image: url("./card.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+
+    box-shadow: 0 0 25px #3f00ff88, inset 0 0 15px #00eaff66;
+}
+
+/* Texte affiché sur la carte */
+#display-number,
+#display-name {
+    font-size: 18px;
+    color: #0d0d0d;
+    letter-spacing: 2px;
+}
+
+.card-expiry span {
+    font-size: 16px;
+    color: #0a0a0a;
+}
+
+/* ======== INPUTS GAMING ======== */
+input, select {
+    width: 85%;
+    padding: 10px;
+    margin: 8px auto;
+    border-radius: 10px;
+    border: 2px solid #03b132;
+    background: #ffffff;
+    color: #000000;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s ease;
+    text-align: center;
+}
+
+/* Effet néon au focus */
+input:focus, select:focus {
+    border-color: #00eaff;
+    box-shadow: 0 0 10px #00eaff;
+}
+
+/* Valide */
+input:valid, select:valid {
+    border-color: #00ff88;
+}
+
+/* Invalide */
+input:invalid, select:invalid {
+    border-color: #ff3344;
+}
+
+/* ======== BOUTON GAMING ======== */
+button {
+    width: 90%;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 12px;
+    border: none;
+    font-size: 18px;
+    color: rgb(7, 7, 7);
+    background: linear-gradient(45deg, #3f00ff, #00eaff);
+    cursor: pointer;
+    transition: 0.3s ease;
+    letter-spacing: 1px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Effet RGB hover */
+button:hover {
+    box-shadow: 0 0 15px #00eaff, 0 0 25px #3f00ff;
+    transform: scale(1.05);
+}
+
+/* ======== RESPONSIVE ======== */
+@media (max-width: 360px) {
+    .payment-container, .card-box {
+        width: 280px;
+    }
+
+    input, select, button {
+        width: 90%;
+    }
+}

@@ -1,0 +1,146 @@
+/* 🌌 BACKGROUND GAMING */
+body {
+    background: linear-gradient(180deg, #0a0f2d, #0a0f2d);
+    font-family: "Orbitron", sans-serif;
+    color: #e0eaff;
+    margin: 0;
+    padding: 0;
+}
+
+/* 🔷 CONTAINER */
+.container {
+    width: 420px;
+    margin: 80px auto;
+    background: rgba(15, 23, 42, 0.85);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px #007bff66, inset 0 0 15px #00d9ff55;
+    text-align: center;
+}
+
+/* 🟣 TITLE */
+h2 {
+    color: #fd01c2ff;
+    font-size: 24px;
+    text-shadow: 0 0 10px #00eaff;
+    margin-bottom: 25px;
+}
+
+/* ✔ MESSAGE */
+.success-message {
+    color: #ff26d7ff;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+/* 🔵 INPUTS */
+input {
+    width: 90%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid #007bff;
+    background: #0f172a;
+    color: #00eaff;
+    font-size: 15px;
+    outline: none;
+    margin-bottom: 15px;
+    transition: .25s;
+}
+
+input:focus {
+    border-color: #00eaff;
+    box-shadow: 0 0 10px #761391ff;
+}
+
+label {
+    color: #d332d3ff;
+    font-size: 16px;
+    display: block;
+    text-align: left;
+    width: 95%;
+    margin: 0 auto 5px;
+}
+
+/* 🔥 BUTTON */
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background: linear-gradient(45deg, #802bb1ff, #00eaff);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: .25s;
+    box-shadow: 0 0 15px #00bfff88;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #00eaff;
+}
+
+/* 🔙 RETOUR */
+a {
+    display: block;
+    margin-top: 20px;
+    color: #4cc9ff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #00eaff;
+    text-shadow: 0 0 8px #00eaff;
+}
+/* Style global des champs */
+.input-field,
+.select-field {
+    width: 90%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid #007bff;
+    background: #0f172a;
+    color: #00eaff;
+    font-size: 15px;
+    outline: none;
+    margin-bottom: 15px;
+    transition: .25s;
+}
+
+/* Effet focus gaming */
+.input-field:focus,
+.select-field:focus {
+    border-color: #00eaff;
+    box-shadow: 0 0 10px #00eaff;
+}
+
+/* Style du SELECT */
+.select-field {
+    appearance: none;
+    cursor: pointer;
+
+    /* Flèche custom bleue */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='%2300eaff' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+/* 🌟 Message d’erreur gaming */
+.error-text-gaming {
+    color: #ff3cc7;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 6px #ff0099;
+    opacity: 0;
+    transition: 0.3s ease-in-out;
+    height: 18px;
+}
+
+/* 🌟 Glow rouge si erreur */
+.input-error {
+    border-color: #ff0077 !important;
+    box-shadow: 0 0 12px #ff0077 !important;
+}

@@ -207,6 +207,24 @@ socket.on("chat-message", ({ from, text }) => {
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
 });
+// 🎁 RÉCEPTION D'UN GIFT
+socket.on("receive-gift", (data) => {
+  const div = document.createElement("div");
+  div.innerHTML = `
+    <strong>${data.senderName
+} :</strong> 🎁 ${data.giftName}
+    <span style="color:green;">(${data.amount.toFixed(2)} DT)</span>
+  `;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+});
+// 🔊 JOUER LE SON DU GIFT
+const sound = document.getElementById("giftSound");
+if (sound) {
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
+}
+
 
 // NOTIFS
 function pushNotif(text) {
@@ -226,5 +244,8 @@ function pushNotif(text) {
 }
 </script>
 
+
+
 </body>
+
 </html>

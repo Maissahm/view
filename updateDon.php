@@ -1,6 +1,6 @@
 <?php
-require_once '../Controller/DonController.php';
-require_once '../model/Don.php';
+require_once '../controller/DonController.php';
+require_once '../model/don.php';
 
 $controller = new DonController();
 
@@ -15,56 +15,83 @@ if (!$donData) {
     die("❌ Don introuvable.");
 }
 
+// ✅ Récupérer les projets AVANT l'affichage
+$projets = $controller->getAllProjetsInfos();
+
 $message = "";
 
+// Soumission du formulaire
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $don = new Don(
         $_POST['id_projet'],
-        $_POST['id_stream'],
-        $_POST['id_user'],
+        $donData['id_stream'],   // pas modifiable
+        $donData['id_user'],     // pas modifiable
         $_POST['montant']
     );
 
     $controller->updateDon($id_don, $don);
 
-    $message = "Don modifié avec succès !";
+    $message = "L'equipe G4S vous remercie pour votre Don";
+        header("Location: donation.php");
+    exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Modifier un don</title>
+    <title>Modifier un Don</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="updateDon.css">
 </head>
 
 <body>
 
-<h2>✏ Modifier le don #<?= $id_don ?></h2>
+<div class="container">
 
-<?php if ($message): ?>
-    <p style="color:green;"><?= $message ?></p>
-<?php endif; ?>
+    <h2>✏ Modifier votre Don </h2>
+    <br>
+    <p>veuillez inscrire les informations à modifier ci dessous 👇</p>
+    <br>
 
-<form method="POST">
+    <?php if ($message): ?>
+        <p class="success-message"><?= $message ?></p>
+    <?php endif; ?>
 
-    <label>ID Projet :</label><br>
-    <input type="number" name="id_projet" value="<?= $donData['id_projet'] ?>" required><br><br>
+    <form method="POST">
 
-    <label>ID Stream :</label><br>
-    <input type="number" name="id_stream" value="<?= $donData['id_stream'] ?>" required><br><br>
+     <label>Projet :</label>
+<select name="id_projet" class="select-field" required>
+    <?php foreach ($projets as $p): ?>
+        <option value="<?= $p['id_projet'] ?>" 
+            <?= ($p['id_projet'] == $donData['id_projet']) ? 'selected' : '' ?>>
+            <?= htmlspecialchars($p['titre_projet']) ?>
+        </option>
+    <?php endforeach; ?>
+</select>
 
-    <label>ID User :</label><br>
-    <input type="number" name="id_user" value="<?= $donData['id_user'] ?>" required><br><br>
+       <label>Montant :</label>
+<input type="number" 
+       name="montant" 
+       class="input-field" 
+       value="<?= $donData['montant'] ?>" 
+       required>
 
-    <label>Montant :</label><br>
-    <input type="number" name="montant" value="<?= $donData['montant'] ?>" required><br><br>
+<p id="montant-error" class="error-text-gaming"></p>
 
-    <button type="submit">Enregistrer</button>
-</form>
 
-<br>
-<a href="donation.php">⬅ Retour</a>
+<button type="submit" class="submit-btn">💾 Enregistrer</button>
+
+    </form>
+
+    <a href="donation.php">⬅ Retour</a>
+
+</div>
+<script src="assets/js/validationDon.js"></script>
 
 </body>
 </html>
