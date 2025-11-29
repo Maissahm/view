@@ -1,8 +1,9 @@
 <?php
 session_start();
 require_once '../Controller/DonController.php';
-$donCtrl = new DonController();
-$projetsInfos = $donCtrl->getAllProjetsInfos();
+require_once '../Controller/ProjetController.php';
+$projetctrl = new ProjetController();
+$projetsInfos = $projetctrl->getAllProjetsInfos();
 
 
 

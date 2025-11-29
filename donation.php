@@ -3,6 +3,8 @@ session_start();
 
 require_once '../Controller/DonController.php';
 $donCtrl = new DonController();
+require_once '../Controller/ProjetController.php';
+$projetctrl = new ProjetController();
 
 // 🔹 Récupération des dons
 $id_user = $_SESSION['id_user'] ?? 2;
@@ -15,7 +17,7 @@ $dons = $donCtrl->getDonsByUser($id_user);
 
 
 // 🔹 Récupération des projets avec montants (menu + bars)
-$projetsInfos = $donCtrl->getAllProjetsInfos();
+$projetsInfos = $projetctrl->getAllProjetsInfos();
 ?>
 
 <!DOCTYPE html>
